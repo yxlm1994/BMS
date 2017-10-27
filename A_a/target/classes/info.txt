@@ -1,0 +1,58 @@
+实现控制器方法
+(1):注解 @controller
+(2):extends AbstractController
+RequestMappaing key-value
+由注解类的RM+注解方法的RM构成全路径
+每个controller有:
+a:Logger.getLogger(...);
+b:@RequestMapping("what.html")
+c:func String index(){
+	return("what");}
+key:	
+	Ctrl+T
+	Ctrl+Shift+T
+;;---------------------------------------
+a.design pattern:
+b.java-model2 pattern -> mvc{针对web项目封层}
+c.java model1 pattern ->后台模式
+ {dao[data-access-obj](对数据的原子操作),service[针对业务对象](对业务的原子操作),
+  controller[控制业务流程]}
+d.单例模式
+;;-------------------------------------------
+spring-mvc 异常处理
+1.局部异常处理
+在controller类中的方法上
+加上一个注解@ExceptionHandler
+2.全局异常处理
+在spring-mvc.xml中配置
+;;--------------------------
+spring-mvc 上传文件
+1.将jsp中form表单的属性改成
+enctype="multipart/form-data" method="post"
+2.controller类中写上传文件方法
+3.Spring-mvc 上传配置
+post取不到值:
+form表单的enctype编码方式不同导致的；
+enctype 属性规定在发送到服务器之前应该如何对表单数据进行编码。
+默认地，表单数据会编码为 "application/x-www-form-urlencoded"。
+就是说，在发送到服务器之前，所有字符都会进行编码（空格转换为 "+" 加号，特殊符号转换为 ASCII HEX 值）。
+如果使用GET，则强制使用application/x-www-form-urlencoded"方式。
+代码里强制使用了multipart/form-data方式，所以SpringMVC中获取不到POST形式的参数
+spring mvc如果要接收 multipart/form-data 传输的数据，应该在spring上下文配置
+<bean id="multipartResolver" 
+class="org.springframework.web.multipart.commons.CommonsMultipartResolver">       
+</bean>
+;;----------------------------------
+在MapperScannerConfigurer中，我们知道sqlSessionFactory的注入方式有四种，
+分别是sqlSessionFactory，sqlSessionFactoryBeanName，sqlSessionTemplate，
+sqlSessionTemplateBeanName,而sqlSessionFactory这种已经过时，
+所以我们用到的是sqlSessionFactoryBeanName，接下来说说这个的好处，为什么要用到它！
+原因1：
+注入sqlSessionFactory,（可以不用配置）只有当配置多数据源的时候，这时会有多个sqlSessionFactory，
+可以通过改属性来指定哪一个sqlSessionFactory（综合网上的总结） 
+原因2(重点)：
+注入sqlSessionFactory，后面的value是SqlSessionFactory的bean的名字，
+也就是sqlSessionFactory的id当我们的mapperscannerconfigurer启动的时候，
+可能会出现我们的jdbc.properties文件未被加载，这样的话它拿到的DataSource就是错误的，
+因为像${jdbc.url}这类的属性还没有被替换掉，所以通过BeanName后处理的方式，当我们去用我们的Mybatis的时候，
+它才会去找我们对应的sqlSessionFactory，为了防止它提前初始化我们的sqlSessionFactory .

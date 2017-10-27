@@ -1,0 +1,11 @@
+选择项目中的pom.xml配置文件
+ --》 右键run
+ --》maven bulid 
+ --》在对话框中的Goals 
+ --》输入mybatis-generator:generate
+ 
+ 导出maven所有依赖的jar包
+ --》 右键run
+ --》maven bulid 
+ --》在对话框中的Goals 
+ --》输入dependency:copy-dependencies
