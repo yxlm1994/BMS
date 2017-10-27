@@ -1,1 +1,3 @@
 *.class
+/A_a/target/
+/A_a/logs/
